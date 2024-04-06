@@ -5,7 +5,7 @@ another mario mod!!!
 * Doido Engine
 
 <p align="center">
-<img src="https://www.newgrounds.com/dump/draw/5657fbf528979526e5e7da27e30cd2a7">
+<img src="https://www.newgrounds.com/dump/draw/27ed38c719b9761af970cac60f441e21">
 </p>
 
 ---------------------------------
