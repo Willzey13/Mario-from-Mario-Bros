@@ -3,19 +3,22 @@ package data;
 class CppAPI
 {
 	#if cpp
-	public static function darkMode()
+	public static function setWindowColorMode(mode:WindowColorMode)
 	{
-		WindowsData.setWindowColorMode(DARK);
+		var darkMode:Int = cast(mode, Int);
+
+		if (darkMode > 1 || darkMode < 0)
+		{
+			trace("WindowColorMode Not Found...");
+			return;
+		}
+
+		WindowsData.setWindowColorMode(darkMode);
 	}
 
-	public static function lightMode()
+	public static function setWindowOppacity(alpha:Float)
 	{
-		WindowsData.setWindowColorMode(LIGHT);
-	}
-
-	public static function setWindowOppacity(a:Float)
-	{
-		WindowsData.setWindowAlpha(a);
+		WindowsData.setWindowAlpha(alpha);
 	}
 
 	public static function _setWindowLayered()
@@ -72,21 +75,7 @@ class CppAPI
 #elseif linux
 @:headerCode("#include <stdio.h>")
 #end
-#if windows
-@:headerClassCode('
-	static BOOL CALLBACK enumWinProc(HWND hwnd, LPARAM lparam) {
-		std::vector<std::string> *names = reinterpret_cast<std::vector<std::string> *>(lparam);
-		char title_buffer[512] = {0};
-		int ret = GetWindowTextA(hwnd, title_buffer, 512);
-		//title blacklist: "Program Manager", "Setup"
-		if (IsWindowVisible(hwnd) && ret != 0 && std::string(title_buffer) != names->at(0) && std::string(title_buffer) != "Program Manager" && std::string(title_buffer) != "Setup") {
-			ShowWindow(hwnd, SW_HIDE);
-			names->insert(names->begin() + 1, std::string(title_buffer));
-		}
-		return 1;
-	}
-')
-#end
+
 class WindowsData
 {
 	private static var taskbarWasVisible:Int;
@@ -227,7 +216,6 @@ class WindowsData
 		if (darkMode > 1 || darkMode < 0)
 		{
 			trace("WindowColorMode Not Found...");
-
 			return;
 		}
 
